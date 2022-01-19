@@ -11,8 +11,8 @@ set shiftwidth=4            " width for autoindents
 set autoindent              " indent a new line the same amount as the line just typed
 set number relativenumber   " add line numbers
 set wildmode=longest,list   " get bash-like tab completions
-set cc=80                  " set an 80 column border for good coding style
-filetype plugin indent on   "allow auto-indenting depending on file type
+set cc=80                   " set an 80 column border for good coding style
+filetype plugin indent on   " allow auto-indenting depending on file type
 syntax on                   " syntax highlighting
 set mouse=a                 " enable mouse click
 set clipboard=unnamedplus   " using system clipboard
@@ -31,8 +31,11 @@ Plug 'honza/vim-snippets'
 Plug 'scrooloose/nerdtree'
 Plug 'preservim/nerdcommenter'
 Plug 'mhinz/vim-startify'
-Plug 'neoclide/coc.nvim', {'branch': 'release'} 
-" List ends here. Plugins become visible to Vim after this call'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+""" List ends here. Plugins become visible to Vim after this call'
 call plug#end()
 " color schemes 
 if (has("termguicolors")) 
@@ -50,16 +53,6 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
-" move split panes to left/bottom/top/right
-nnoremap <A-h> <C-W>H
-nnoremap <A-j> <C-W>J
-nnoremap <A-k> <C-W>K
-nnoremap <A-l> <C-W>L
-" move between panes to left/bottom/top/right
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
 
 " Press i to enter insert mode, and ii to exit insert mode.
 :inoremap ii <Esc>
@@ -68,10 +61,26 @@ nnoremap <C-l> <C-w>l
 :vnoremap jk <Esc>
 :vnoremap kj <Esc>
 
-let g:python3_host_prog = '/home/vero/.pyenv/versions/py3nvim/bin/python'
+let mapleader = "\<Space>"
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+let g:python3_host_prog = has('win32') ? 'C:\Users\Vero\.pyenv\pyenv-win\shims\python.bat' : '/home/vero/.pyenv/versions/py3nvim/bin/python'
 
 hi StatusLine   ctermfg=15  guifg=#ffffff ctermbg=239 guibg=#4e4e4e cterm=bold gui=bold
 hi StatusLineNC ctermfg=249 guifg=#b2b2b2 ctermbg=237 guibg=#3a3a3a cterm=none gui=none
 
-tnoremap <Esc> <C-\><C-n>
-
+if 1
+let &shell='C:/cygwin64/bin/bash.exe'
+set shellcmdflag=--login\ -c
+set shellslash
+set shellquote=( shellxquote=\"
+let $PATH .= ';C:\cygwin64\bin'
+else
+set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
+set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
+endif
