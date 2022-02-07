@@ -34,7 +34,8 @@ Plug 'mhinz/vim-startify'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'neovim/nvim-lspconfig'
+Plug 'mfussenegger/nvim-dap'
 """ List ends here. Plugins become visible to Vim after this call'
 call plug#end()
 " color schemes 
@@ -63,24 +64,29 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 let mapleader = "\<Space>"
 
-" Find files using Telescope command-line sugar.
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+" Using Lua functions
+nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+
 
 let g:python3_host_prog = has('win32') ? 'C:\Users\Vero\.pyenv\pyenv-win\shims\python.bat' : '/home/vero/.pyenv/versions/py3nvim/bin/python'
 
 hi StatusLine   ctermfg=15  guifg=#ffffff ctermbg=239 guibg=#4e4e4e cterm=bold gui=bold
 hi StatusLineNC ctermfg=249 guifg=#b2b2b2 ctermbg=237 guibg=#3a3a3a cterm=none gui=none
 
-if 1
-let &shell='C:/cygwin64/bin/bash.exe'
-set shellcmdflag=--login\ -c
-set shellslash
-set shellquote=( shellxquote=\"
-let $PATH .= ';C:\cygwin64\bin'
-else
-set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
-set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
-endif
+if has('win32')
+let &shell = has('win32') ? 'powershell' : 'pwsh'
+let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+set shellquote= shellxquote=
+end
+
+lua << EOF
+require('telescope').setup()
+
+require('lspconfig').rust_analyzer.setup({})
+EOF
+
