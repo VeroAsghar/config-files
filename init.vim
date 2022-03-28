@@ -19,6 +19,8 @@ set clipboard=unnamedplus   " using system clipboard
 filetype plugin on
 set cursorline              " highlight current cursorline
 set noswapfile              " disable creating swap file
+set nowrap
+set signcolumn=yes          " fixes column to remove jitter
 " Plugins will be downloaded under the specified directory.
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Declare the list of plugins.
@@ -54,13 +56,6 @@ inoremap <A-j> <Esc>:m .+1<CR>==gi
 inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
-
-" Press i to enter insert mode, and ii to exit insert mode.
-:inoremap ii <Esc>
-:inoremap jk <Esc>
-:inoremap kj <Esc>
-:vnoremap jk <Esc>
-:vnoremap kj <Esc>
 
 let mapleader = "\<Space>"
 
