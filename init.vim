@@ -21,43 +21,10 @@ set cursorline              " highlight current cursorline
 set noswapfile              " disable creating swap file
 set nowrap
 set signcolumn=yes          " fixes column to remove jitter
-" Plugins will be downloaded under the specified directory.
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-" Declare the list of plugins.
-Plug 'tpope/vim-sensible'
-Plug 'junegunn/seoul256.vim'
-Plug 'dracula/vim'
-Plug 'ryanoasis/vim-devicons'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'scrooloose/nerdtree'
-Plug 'preservim/nerdcommenter'
-Plug 'mhinz/vim-startify'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'neovim/nvim-lspconfig'
-" Completion framework
-Plug 'hrsh7th/nvim-cmp'
 
-" LSP completion source for nvim-cmp
-Plug 'hrsh7th/cmp-nvim-lsp'
+" plugins
+lua require('plugins')
 
-" Snippet completion source for nvim-cmp
-Plug 'hrsh7th/cmp-vsnip'
-
-" Other usefull completion sources
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-buffer'
-
-Plug 'mfussenegger/nvim-dap'
-" To enable more of the features of rust-analyzer, such as inlay hints and more!
-Plug 'simrat39/rust-tools.nvim'
-
-" Snippet engine
-Plug 'hrsh7th/vim-vsnip'
-""" List ends here. Plugins become visible to Vim after this call'
-call plug#end()
 " color schemes 
 if (has("termguicolors")) 
     set termguicolors
@@ -88,18 +55,11 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 
-let g:python3_host_prog = has('win32') ? 'C:\Users\Vero\.pyenv\pyenv-win\shims\python.bat' : '/home/vero/.pyenv/versions/py3nvim/bin/python'
+let g:python3_host_prog = '/Users/vero-air/.pyenv/versions/py3nvim/bin/python'
 
 hi StatusLine   ctermfg=15  guifg=#ffffff ctermbg=239 guibg=#4e4e4e cterm=bold gui=bold
 hi StatusLineNC ctermfg=249 guifg=#b2b2b2 ctermbg=237 guibg=#3a3a3a cterm=none gui=none
 
-if has('win32')
-let &shell = has('win32') ? 'powershell' : 'pwsh'
-let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
-let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-set shellquote= shellxquote=
-end
 
 lua << EOF
 require('telescope').setup()
