@@ -6,7 +6,7 @@ fn main() -> Result<()> {
     let home = std::env::var("HOME")?;
 
     let mut src = std::env::current_dir()?;
-    src.push("../init.vim");
+    src.push("../init.lua");
     let mut dest = PathBuf::from(home);
     dest.push(".config/nvim"); 
 
@@ -43,7 +43,7 @@ mod tests {
 
         assert!(&dest.exists());
         let mut src = std::env::current_dir()?;
-        src.push("../init.vim");
+        src.push("../init.lua");
         println!("{:?}", src);
 
         assert!(&src.exists());
