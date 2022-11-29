@@ -24,9 +24,6 @@ return require('packer').startup(function()
 
     -- See hrsh7th's other useins for more completion sources!
 
-    -- To enable more of the features of rust-analyzer, such as inlay hints and more!
-    use 'simrat39/rust-tools.nvim'
-
     -- Snippet engine
     use 'hrsh7th/vim-vsnip'
 
@@ -40,6 +37,7 @@ return require('packer').startup(function()
     use 'arcticicestudio/nord-vim'
     use 'mfussenegger/nvim-dap'
     use 'Mofiqul/dracula.nvim'
+
 
     if packer_bootstrap then
         require('packer').sync()
