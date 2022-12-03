@@ -21,11 +21,12 @@ vim.cmd(':set cursorline           ')   -- highlight current cursorline
 vim.cmd(':set noswapfile           ')   -- disable creating swap file
 vim.cmd(':set nowrap               ')
 vim.cmd(':set signcolumn=yes       ')   -- fixes column to remove jitter
+vim.cmd(':set so=999')
 require('plugins')
 vim.cmd(':colorscheme dracula')
 vim.cmd(':set signcolumn=yes')
 vim.cmd('let g:netrw_browse_split = 0')
-vim.g.python3_host_prog = '/Users/vero-air/.pyenv/versions/py3nvim/bin/python'
+vim.g.python3_host_prog = '/home/james/.pyenv/versions/3.9.2/bin/python'
 
 require('maps')
 
