@@ -41,6 +41,9 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', '<space>f', vim.lsp.buf.formatting, bufopts)
 end
 
+require('lspconfig')['texlab'].setup{
+    on_attach = on_attach,
+}
 require('lspconfig')['pyright'].setup{
     on_attach = on_attach,
 }
@@ -69,11 +72,15 @@ require('lspconfig').rust_analyzer.setup({
 local cmp = require'cmp'
 cmp.setup({
   -- Enable LSP snippets
-  snippet = {
-    expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
+    snippet = {
+        expand = function(args)
+          require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+    },
   mapping = {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-n>'] = cmp.mapping.select_next_item(),
@@ -93,8 +100,9 @@ cmp.setup({
   -- Installed sources
   sources = {
     { name = 'nvim_lsp' },
-    { name = 'vsnip' },
+    { name = 'luasnip' },
     { name = 'path' },
     { name = 'buffer' },
   },
 })
+

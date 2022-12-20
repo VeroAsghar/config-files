@@ -7,7 +7,7 @@ fn main() -> Result<()> {
 
     let mut src = std::env::current_dir()?;
     src.push("../init.lua");
-    let mut dest = PathBuf::from(home);
+    let mut dest = PathBuf::from(home.clone());
     dest.push(".config/nvim"); 
 
     Command::new("ln")
@@ -18,6 +18,16 @@ fn main() -> Result<()> {
 
     let mut src = std::env::current_dir()?;
     src.push("../lua");
+
+    Command::new("ln")
+        .arg("-sf")
+        .arg(src)
+        .arg(&dest)
+        .output()?;
+
+    let mut src = std::env::current_dir()?;
+    src.push("../.tmux.conf");
+    let mut dest = PathBuf::from(home);
 
     Command::new("ln")
         .arg("-sf")
@@ -39,18 +49,22 @@ mod tests {
 
         let mut dest = PathBuf::from(home);
         dest.push(".config/nvim"); 
-        println!("{:?}", dest);
-
+        eprintln!("{:?}", dest);
         assert!(&dest.exists());
+
         let mut src = std::env::current_dir()?;
         src.push("../init.lua");
-        println!("{:?}", src);
-
+        eprintln!("{:?}", src);
         assert!(&src.exists());
 
         let mut src = std::env::current_dir()?;
         src.push("../lua");
-        println!("{:?}", src);
+        eprintln!("{:?}", src);
+        assert!(&src.exists());
+
+        let mut src = std::env::current_dir()?;
+        src.push("../.tmux.conf");
+        eprintln!("{:?}", src);
         assert!(&src.exists());
 
         Ok(())

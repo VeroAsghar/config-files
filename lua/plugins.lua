@@ -16,28 +16,26 @@ return require('packer').startup(function()
     use 'hrsh7th/cmp-nvim-lsp'
 
     -- Snippet completion source for nvim-cmp
-    use 'hrsh7th/cmp-vsnip'
+    use 'saadparwaiz1/cmp_luasnip' 
 
     -- Other usefull completion sources
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-buffer'
 
-    -- See hrsh7th's other useins for more completion sources!
-
+    use "rafamadriz/friendly-snippets"
     -- Snippet engine
-    use 'hrsh7th/vim-vsnip'
-
+    use({"L3MON4D3/LuaSnip", tag = "v<CurrentMajor>.*"})
     -- Fuzzy finder
     -- Optional
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
 
-    -- Color scheme used in the GIFs!
-    use 'arcticicestudio/nord-vim'
     use 'mfussenegger/nvim-dap'
-    use 'Mofiqul/dracula.nvim'
 
+    use { "catppuccin/nvim", as = "catppuccin" }
+
+    use 'lervag/vimtex'
 
     if packer_bootstrap then
         require('packer').sync()
