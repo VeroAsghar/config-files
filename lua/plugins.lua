@@ -31,11 +31,47 @@ return require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
 
-    use 'mfussenegger/nvim-dap'
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    }
 
     use { "catppuccin/nvim", as = "catppuccin" }
 
-    use 'lervag/vimtex'
+    use 'jakewvincent/texmagic.nvim'
+
+    use {
+        "Pocco81/auto-save.nvim",
+        config = function()
+            require("auto-save").setup {
+                enabled = false,
+            }
+        end,
+    }
+
+    use {
+    "nvim-neorg/neorg",
+    config = function()
+        require('neorg').setup {
+            load = {
+                ["core.defaults"] = {}, -- Loads default behaviour
+                ["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
+                ["core.norg.dirman"] = { -- Manages Neorg workspaces
+                    config = {
+                        workspaces = {
+                            notes = "~/notes",
+                        },
+                    },
+                },
+            },
+        }
+    end,
+    run = ":Neorg sync-parsers",
+    requires = "nvim-lua/plenary.nvim",
+}
 
     if packer_bootstrap then
         require('packer').sync()
