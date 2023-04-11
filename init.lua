@@ -12,8 +12,7 @@ vim.wo.signcolumn = 'yes'
 vim.o.undofile = true
 
 vim.keymap.set({'n', 'i', 'v', 'x'}, '<C-c>', '<Esc>')
-vim.keymap.set('t', '<C-c>', '<C-\\><C-n>')
-vim.keymap.set({'n', 'i', 'v', 'x'}, '<Esc>', '')
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
 vim.cmd(':set clipboard=unnamedplus')
 vim.cmd(':set showmatch            ')   -- show matching 
@@ -81,6 +80,5 @@ require("catppuccin").setup({
 
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
-require("luasnip.loaders.from_vscode").lazy_load()
 require('maps')
 
