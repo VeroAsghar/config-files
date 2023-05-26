@@ -1,3 +1,4 @@
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.o.hlsearch = false
@@ -11,6 +12,8 @@ vim.o.mouse = 'a'
 vim.wo.signcolumn = 'yes'
 vim.o.undofile = true
 
+
+vim.keymap.set({'n'}, '<leader>c', ':')
 vim.keymap.set({'n', 'i', 'v', 'x'}, '<C-c>', '<Esc>')
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>')
 
@@ -31,6 +34,7 @@ vim.cmd(':set cursorline           ')   -- highlight current cursorline
 vim.cmd(':set noswapfile           ')   -- disable creating swap file
 vim.cmd(':set nowrap               ')
 vim.cmd(':set so=999')
+vim.cmd(':set splitright')
 vim.cmd('syntax enable')
 require('plugins')
 vim.cmd('let g:netrw_browse_split = 0')
@@ -43,7 +47,7 @@ require("catppuccin").setup({
         dark = "mocha",
     },
     transparent_background = true,
-    term_colors = true,
+    term_colors = false,
     dim_inactive = {
         enabled = false,
         shade = "dark",

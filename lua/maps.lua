@@ -1,9 +1,13 @@
+local actions = require("telescope.actions")
 require('telescope').setup {
   defaults = {
     mappings = {
       i = {
         ['<C-u>'] = false,
-        ['<C-d>'] = false,
+        ['<C-c>'] = { "<esc>", type = "command" },
+      },
+      n = {
+        ['<C-c>'] = actions.close
       },
     },
   },
@@ -189,9 +193,8 @@ cmp.setup({
     },
 
   mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- Add tab support
+    --['<C-p>'] = cmp.mapping.select_prev_item(),
+    --['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
@@ -200,14 +203,8 @@ cmp.setup({
       behavior = cmp.ConfirmBehavior.Insert,
       select = false,
     }),
-    ["<Tab>"] = cmp.mapping(function(fallback)
-        cmp.select_next_item()
-    end, { "i", "s" }),
-
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
-        cmp.select_prev_item()
-    end, { "i", "s" }),
-
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
   },
 
   -- Installed sources
@@ -219,3 +216,4 @@ cmp.setup({
 })
 
 vim.api.nvim_set_keymap("n", "<leader>as", ":ASToggle<CR>", {})
+
