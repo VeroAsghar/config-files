@@ -1,56 +1,79 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-  packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
+local plugins = 
+{
+    { 'neovim/nvim-lspconfig' },
+    { "catppuccin/nvim" },
+    -- lazy.nvim
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        opts = {
+            -- add any options here
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            "MunifTanjim/nui.nvim",
+            -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            "rcarriga/nvim-notify",
+        }
+    },
 
-return require('packer').startup(function()
-  use 'wbthomason/packer.nvim'
-  -- Collection of common configurations for the Nvim LSP client
-  use 'neovim/nvim-lspconfig'
+    {
+        'nvim-lualine/lualine.nvim',
+        dependencies = { 'nvim-tree/nvim-web-devicons', opts = true }
+    },
 
-  -- Completion framework
-  use 'hrsh7th/nvim-cmp'
+    -- Fuzzy finder
+    { 'nvim-lua/plenary.nvim' },
+    { 'nvim-telescope/telescope.nvim' },
+ 
+    {
+        'nvim-treesitter/nvim-treesitter',
+        init = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    },
 
-  -- LSP completion source for nvim-cmp
-  use 'hrsh7th/cmp-nvim-lsp'
+    -- Completion framework
+    { 'hrsh7th/nvim-cmp' },
+    -- LSP completion source for nvim-cmp
+    { 'hrsh7th/cmp-nvim-lsp' },
+    -- Other {full completion sources
+    { 'hrsh7th/cmp-path' },
+    { 'hrsh7th/cmp-buffer' },
 
-
-  -- Other usefull completion sources
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-buffer'
-
-  -- Fuzzy finder
-  -- Optional
-  use 'nvim-lua/popup.nvim'
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-telescope/telescope.nvim'
-
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
-      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-      ts_update()
-    end,
-  }
-  use { "catppuccin/nvim", as = "catppuccin" }
-
-  use 'jakewvincent/texmagic.nvim'
-
-  -- Lua
-  use {
-    "folke/zen-mode.nvim",
-    config = function()
-      require("zen-mode").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
-
-
-  if packer_bootstrap then
-    require('packer').sync()
-  end
-end)
+    {
+        "nvim-neorg/neorg",
+        -- lazy-load on filetype
+        ft = "norg",
+        -- options for neorg. This will automatically call `require("neorg").setup(opts)`
+        opts = {
+          load = {
+            ["core.defaults"] = {},
+            ["core.concealer"] = {}, -- Adds pretty icons to your documents
+            ["core.dirman"] = { -- Manages Neorg workspaces
+                config = {
+                    workspaces = {
+                        notes = "~/notes",
+                    },
+                },
+            },
+          },
+        },
+      },
+}
+require("lazy").setup(plugins)
